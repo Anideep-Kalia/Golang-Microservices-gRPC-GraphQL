@@ -1,0 +1,44 @@
+GRPC:
+gRPC is a modern open-source remote procedure call (RPC) framework developed by Google. Used in distributed systems / microservices arch. where applications communicate with each other. gRPC leverages *HTTP/2 for transport, *Protocol Buffers (Protobuf) for serialization, and supports multiple programming languages.
+
+Key Use Cases of gRPC:
+Microservices Communication:
+Low-Latency Applications:
+Bidirectional Streaming: chat application, video streaming etc.
+Interoperability in Heterogeneous Environments: communication between services written in different programming languages 
+
+Features:
+Uses HTTP/2 for faster transport with multiplexing, compressed headers, and binary serialization.
+Language-agnostic: Official support for many languages (e.g., C++, Java, Python, Go, Node.js, etc.).
+Strongly Typed APIs: Protobuf defines APIs with strongly typed messages, reducing errors and improving code maintainability.
+Streaming Support: upports unary RPC (single request-response), server streaming, client streaming, and bidirectional streaming.
+Authentication:Supports SSL/TLS for encryption and token-based authentication mechanisms.
+Backward Compatibility:Protobuf ensures backward and forward compatibility, allowing services to evolve independently.
+
+-------------------------------------------------------------------------------------------------------
+
+HTTP/2 for Transport:
+designed to address the limitations of HTTP/1.1
+
+Key Features of HTTP/2 in gRPC:
+Multiplexing:
+Header Compression:
+Binary Framing: making it faster and less error-prone
+Stream Prioritization:
+Persistent Connections:
+Bidirectional Communication: full-duplex communication
+
+-------------------------------------------------------------------------------------------------------
+
+Protocol Buffers (Protobuf) for Serialization
+lightweight, efficient serialization format developed by Google. It is used in gRPC for defining and encoding messages exchanged between services.
+
+What is Serialization?
+Serialization is the process of converting structured data into a format that can be transmitted over the network or stored, and later reconstructed (deserialized).
+
+Key Features of Protobuf in gRPC:
+Compact and Efficient: encodes data in a compact binary format; Reduce payload size compared to JSON or XML
+Cross-Language Compatibility:
+Strongly Typed: ensures that messages have a predefined structure, reducing errors
+Backward and Forward Compatibility:
+Fast Parsing and Serialization: faster than JSON or XML in both serialization and deserialization due to its binary nature.
