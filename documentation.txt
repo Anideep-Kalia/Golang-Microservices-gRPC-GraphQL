@@ -16,8 +16,7 @@ Authentication:Supports SSL/TLS for encryption and token-based authentication me
 Backward Compatibility:Protobuf ensures backward and forward compatibility, allowing services to evolve independently.
 
 -------------------------------------------------------------------------------------------------------
-
-HTTP/2 for Transport:
+HTTP/2
 designed to address the limitations of HTTP/1.1
 
 Key Features of HTTP/2 in gRPC:
@@ -29,7 +28,7 @@ Persistent Connections:
 Bidirectional Communication: full-duplex communication
 
 -------------------------------------------------------------------------------------------------------
-
+PROTOCOL BUFFERS
 Protocol Buffers (Protobuf) for Serialization
 lightweight, efficient serialization format developed by Google. It is used in gRPC for defining and encoding messages exchanged between services.
 
@@ -42,3 +41,9 @@ Cross-Language Compatibility:
 Strongly Typed: ensures that messages have a predefined structure, reducing errors
 Backward and Forward Compatibility:
 Fast Parsing and Serialization: faster than JSON or XML in both serialization and deserialization due to its binary nature.
+
+-------------------------------------------------------------------------------------------------------
+GRAPHQL
+
+Inputs are just like types only the difference is inputs are defined to define what kind of inputs user will send
+but types used to define kind of data type will be sent to user
