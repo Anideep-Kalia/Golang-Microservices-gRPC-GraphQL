@@ -47,3 +47,13 @@ GRAPHQL
 
 Inputs are just like types only the difference is inputs are defined to define what kind of inputs user will send
 but types used to define kind of data type will be sent to user
+
+Pagination Input is the actual place where we get the functionality of user want only that memory is fetched form db; large data sets into manageable chunks
+
+gqlgen is a popular library which automates boilerplate associated with GraphQL
+. developer has to just make .GraphQL in which there will be schema 
+. make gqlgen.yaml specifying 
+. run go run github.com/99designs/gqlgen generate
+. resolvers interface will be maded inside resolver.go;70
+
+
