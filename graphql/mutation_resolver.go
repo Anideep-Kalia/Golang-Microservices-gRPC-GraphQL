@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/akhilsharma90/go-graphql-microservice/order"
+	"github.com/Anideep-Kalia/go-graphql-grpc-micro/order"
 )
 
 var (
@@ -17,6 +17,7 @@ type mutationResolver struct {
 	server *Server
 }
 
+// (r *mutationResolver) -> receiver to show that CreateAccount is a method of mutationResolver just like in OOP 
 func (r *mutationResolver) CreateAccount(ctx context.Context, in AccountInput) (*Account, error) {
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
