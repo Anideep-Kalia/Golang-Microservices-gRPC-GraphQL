@@ -1,4 +1,5 @@
 // this file is like graphql gateway which connects to different micro-services and provides the resolvers for the graphql schema
+// this code follows the standard patterns for using gqlgen
 package main
 
 import (
