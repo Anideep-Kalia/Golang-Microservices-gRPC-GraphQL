@@ -62,6 +62,7 @@ func (s *Server) Account() AccountResolver {
 	}
 }
 
+// generates a schema with mappings to the resolvers
 func (s *Server) ToExecutableSchema() graphql.ExecutableSchema {
 	return NewExecutableSchema(Config{
 		Resolvers: s,
