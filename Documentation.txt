@@ -79,4 +79,9 @@ ACCOUNT:
 . Abstract the business logic.
 . Provide a reusable and cohesive internal API.
 
+PROTO AND GRPC:
+- To implement gRPC we need to establish proto and to do that we need to create by which proto can understand what to implement when key is called and that's how it is lighter than xml OR JSON
+- Role of Proto (Protocol Buffers) used to define: Services: What functions the server offers; Messages: The structure of the data being passed between the client and server.
+. So service are like methods and the messages are the types of the inputs and outputs of these methods
+
 

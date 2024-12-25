@@ -16,16 +16,17 @@ type grpcServer struct {
 }
 
 func ListenGRPC(s Service, port int) error {
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))				// like http or app in express.js
 	if err != nil {
 		return err
 	}
-	serv := grpc.NewServer()
-	pb.RegisterAccountServiceServer(serv, &grpcServer{s})
-	reflection.Register(serv)
-	return serv.Serve(lis)
+	serv := grpc.NewServer()											// new instance of grpc server
+	pb.RegisterAccountServiceServer(serv, &grpcServer{s})				// links the gRPC server (serv) with the service implementation(business logic)
+	reflection.Register(serv)											// Register reflection service on gRPC server
+	return serv.Serve(lis)												// Serve the gRPC server on the port is listening
 }
 
+// below functions are basically using grpc to connect to the service and so thier input and output are in the form of grpc
 func (s *grpcServer) PostAccount(ctx context.Context, r *pb.PostAccountRequest) (*pb.PostAccountResponse, error) {
 	a, err := s.service.PostAccount(ctx, r.Name)
 	if err != nil {
