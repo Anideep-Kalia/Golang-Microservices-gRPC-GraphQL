@@ -8,12 +8,16 @@ import (
 	"github.com/segmentio/ksuid"
 )
 
+type Account struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
 
 type accountService struct {
 	repository Repository
 }
 
-func NewService(r Repository) Service {
+func NewService(r Repository) Service {				// returns new service instance
 	return &accountService{r}
 }
 

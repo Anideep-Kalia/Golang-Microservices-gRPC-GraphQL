@@ -55,5 +55,30 @@ gqlgen is a popular library which automates boilerplate associated with GraphQL
 . make gqlgen.yaml specifying 
 . run go run github.com/99designs/gqlgen generate
 . resolvers interface will be maded inside resolver.go;70
+-------------------------------------------------------------------------------------------------------
+ACCOUNT:
+
+ Mutation or Query -> Client <-> Server -> Service -> repository
+
+- Repository Layer: This layer interacts directly with the database.
+. Executes SQL queries.
+. Maps database results to Go structures.
+. Ensures proper connection management.
+
+- Server Layer (server.go): This layer handles interactions with external clients. In your code, the server layer might be used to:
+. Receive data from a client (e.g., a GRPC request).
+. Call the service layer methods to execute business logic.
+. Return the response back to the client.
+. Decouple the external interface from the internal logic.
+
+- Service Layer: The service is where the business logic resides. It:
+. Implements business rules and conditions.
+. Combines data from multiple repositories if necessary.
+. Ensures consistency and correctness of the data.
+. Calls the repository for persistence.
+. Abstract the business logic.
+. Provide a reusable and cohesive internal API.
+
+-In your current project, the server and service layers are calling the repository directly without adding extra logic in the service layer
 
 
