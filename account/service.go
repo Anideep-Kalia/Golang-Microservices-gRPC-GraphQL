@@ -21,6 +21,7 @@ type accountService struct {
 	repository Repository
 }
 
+// initializing the service
 func NewService(r Repository) Service {
 	return &accountService{r}
 }

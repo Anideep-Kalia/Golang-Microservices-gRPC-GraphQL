@@ -21,6 +21,7 @@ type postgresRepository struct {								// postgresRepository is a PostgreSQL im
 // above is not necessary but recommended and without it our function would be like this:
 // func GetAccountByID(ctx context.Context, db *sql.DB, id string) (*Account, error) {
 
+// below fucntion is used to connect with db and is runned in main.go inside cmd
 func NewPostgresRepository(url string) (Repository, error) {
 	db, err := sql.Open("postgres", url)						// Open a new connection to the db
 	if err != nil {
