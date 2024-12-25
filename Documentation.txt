@@ -79,6 +79,4 @@ ACCOUNT:
 . Abstract the business logic.
 . Provide a reusable and cohesive internal API.
 
--In your current project, the server and service layers are calling the repository directly without adding extra logic in the service layer
-
 
