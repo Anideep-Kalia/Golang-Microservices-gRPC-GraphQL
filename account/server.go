@@ -1,44 +1,69 @@
-// Send data to the client; receive data from the client; send data back to client in form of GRPC response
+//go:generate protoc ./account.proto --go_out=plugins=grpc:./pb
 package account
 
 import (
 	"context"
+	"fmt"
+	"net"
 
-	// to generate unique ids
-	"github.com/segmentio/ksuid"
+	"github.com/akhilsharma90/go-graphql-microservice/account/pb"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
-type Account struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type grpcServer struct {
+	service Service
 }
 
-type accountService struct {
-	repository Repository
-}
-
-func NewService(r Repository) Service {				// returns new service instance
-	return &accountService{r}
-}
-
-func (s *accountService) PostAccount(ctx context.Context, name string) (*Account, error) {
-	a := &Account{
-		Name: name,
-		ID:   ksuid.New().String(),
+func ListenGRPC(s Service, port int) error {
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	if err != nil {
+		return err
 	}
-	if err := s.repository.PutAccount(ctx, *a); err != nil {
+	serv := grpc.NewServer()
+	pb.RegisterAccountServiceServer(serv, &grpcServer{s})
+	reflection.Register(serv)
+	return serv.Serve(lis)
+}
+
+func (s *grpcServer) PostAccount(ctx context.Context, r *pb.PostAccountRequest) (*pb.PostAccountResponse, error) {
+	a, err := s.service.PostAccount(ctx, r.Name)
+	if err != nil {
 		return nil, err
 	}
-	return a, nil
+	return &pb.PostAccountResponse{Account: &pb.Account{
+		Id:   a.ID,
+		Name: a.Name,
+	}}, nil
 }
 
-func (s *accountService) GetAccount(ctx context.Context, id string) (*Account, error) {
-	return s.repository.GetAccountByID(ctx, id)
-}
-
-func (s *accountService) GetAccounts(ctx context.Context, skip uint64, take uint64) ([]Account, error) {
-	if take > 100 || (skip == 0 && take == 0) {
-		take = 100
+func (s *grpcServer) GetAccount(ctx context.Context, r *pb.GetAccountRequest) (*pb.GetAccountResponse, error) {
+	a, err := s.service.GetAccount(ctx, r.Id)
+	if err != nil {
+		return nil, err
 	}
-	return s.repository.ListAccounts(ctx, skip, take)
+	return &pb.GetAccountResponse{
+		Account: &pb.Account{
+			Id:   a.ID,
+			Name: a.Name,
+		},
+	}, nil
+}
+
+func (s *grpcServer) GetAccounts(ctx context.Context, r *pb.GetAccountsRequest) (*pb.GetAccountsResponse, error) {
+	res, err := s.service.GetAccounts(ctx, r.Skip, r.Take)
+	if err != nil {
+		return nil, err
+	}
+	accounts := []*pb.Account{}
+	for _, p := range res {
+		accounts = append(
+			accounts,
+			&pb.Account{
+				Id:   p.ID,
+				Name: p.Name,
+			},
+		)
+	}
+	return &pb.GetAccountsResponse{Accounts: accounts}, nil
 }
