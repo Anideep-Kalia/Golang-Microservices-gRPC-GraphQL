@@ -4,6 +4,7 @@ Install protoc -> go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 -------------------------------------------------------------------------------------------------------
 GRPC:
 gRPC is a modern open-source remote procedure call (RPC) framework developed by Google. Used in distributed systems / microservices arch. where applications communicate with each other. gRPC leverages *HTTP/2 for transport, *Protocol Buffers (Protobuf) for serialization, and supports multiple programming languages.
+It works like a triggering setup you need to define proto(schema) and write implementation on sever side what it will do to repository and just run client version of that method on client side to actual implement the function on server side 
 
 Key Use Cases of gRPC:
 Microservices Communication:
@@ -88,5 +89,12 @@ PROTO AND GRPC:
 - To implement gRPC we need to establish proto and to do that we need to create by which proto can understand what to implement when key is called and that's how it is lighter than xml OR JSON
 - Role of Proto (Protocol Buffers) used to define: Services: What functions the server offers; Messages: The structure of the data being passed between the client and server.
 . So service are like methods and the messages are the types of the inputs and outputs of these methods
+
+-------------------------------------------------------------------------------------------------------
+
+CLIENT:
+- On client side grpc works differently as in this we aren't registering the business logic with grpc n/w (Analogous to express.js est. API)
+. in this we connecting to grpc connection already established
+- in this we make new instance so AccountServices by NewAccountServiceClient
 
 
