@@ -90,11 +90,16 @@ PROTO AND GRPC:
 - Role of Proto (Protocol Buffers) used to define: Services: What functions the server offers; Messages: The structure of the data being passed between the client and server.
 . So service are like methods and the messages are the types of the inputs and outputs of these methods
 
--------------------------------------------------------------------------------------------------------
-
 CLIENT:
 - On client side grpc works differently as in this we aren't registering the business logic with grpc n/w (Analogous to express.js est. API)
 . in this we connecting to grpc connection already established
 - in this we make new instance so AccountServices by NewAccountServiceClient
 
+-------------------------------------------------------------------------------------------------------
+CATALOG:
+
+- ELASTIC is used for Full-text Search, Data Analytics, Log and Meteric Management
+. we have used it as DB for the catalog microservice and it is no-SQL 
+. It is preferred over Mongodb for it's high speed and search ability
+. Sniffing is the dynamic discovery of nodes i.e. horizontal scaling
 
