@@ -116,13 +116,13 @@ func (r *elasticRepository) ListProductsWithIDs(ctx context.Context, ids []strin
 	for _, id := range ids {
 		items = append(
 			items,
-			elastic.NewMultiGetItem().											// Multiple enteries having required id
+			elastic.NewMultiGetItem().							// Filling slice with the items having required ID so no interaction with db now
 				Index("catalog").
 				Type("product").
 				Id(id),
 		)
 	}
-	res, err := r.client.MultiGet().
+	res, err := r.client.MultiGet().							// now we are getting data from elastic search matching the ids we have filledin slice
 		Add(items...).
 		Do(ctx)
 	if err != nil {
@@ -132,7 +132,7 @@ func (r *elasticRepository) ListProductsWithIDs(ctx context.Context, ids []strin
 	products := []Product{}
 	for _, doc := range res.Docs {
 		p := productDocument{}
-		if err = json.Unmarshal(*doc.Source, &p); err == nil {
+		if err = json.Unmarshal(*doc.Source, &p); err == nil {	// result is in raw json format so we need to unmarshal it
 			products = append(products, Product{
 				ID:          doc.Id,
 				Name:        p.Name,
@@ -148,8 +148,8 @@ func (r *elasticRepository) SearchProducts(ctx context.Context, query string, sk
 	res, err := r.client.Search().
 		Index("catalog").
 		Type("product").
-		Query(elastic.NewMultiMatchQuery(query, "name", "description")).
-		From(int(skip)).Size(int(take)).
+		Query(elastic.NewMultiMatchQuery(query, "name", "description")).		// search query in name and description, MultiMatchQuery is used to search in multiple fields
+		From(int(skip)).Size(int(take)).										// pagination on the result of NewMultiMatchQuery on  whole db		
 		Do(ctx)
 	if err != nil {
 		log.Println(err)
