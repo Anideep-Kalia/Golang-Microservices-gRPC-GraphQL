@@ -57,7 +57,7 @@ func (r *elasticRepository) PutProduct(ctx context.Context, p Product) error {
 			Description: p.Description,
 			Price:       p.Price,
 		}).
-		Do(ctx)
+		Do(ctx)										// Do is a blocking call; this will actual request to the elastic search
 	return err
 }
 
@@ -97,7 +97,7 @@ func (r *elasticRepository) ListProducts(ctx context.Context, skip, take uint64)
 		return nil, err
 	}
 	products := []Product{}
-	for _, hit := range res.Hits.Hits {
+	for _, hit := range res.Hits.Hits {										// Hits is a slice of search hits
 		p := productDocument{}
 		if err = json.Unmarshal(*hit.Source, &p); err == nil {
 			products = append(products, Product{
@@ -116,7 +116,7 @@ func (r *elasticRepository) ListProductsWithIDs(ctx context.Context, ids []strin
 	for _, id := range ids {
 		items = append(
 			items,
-			elastic.NewMultiGetItem().
+			elastic.NewMultiGetItem().											// Multiple enteries having required id
 				Index("catalog").
 				Type("product").
 				Id(id),

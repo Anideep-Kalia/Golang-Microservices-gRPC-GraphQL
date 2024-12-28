@@ -98,8 +98,11 @@ CLIENT:
 -------------------------------------------------------------------------------------------------------
 CATALOG:
 
-- ELASTIC is used for Full-text Search, Data Analytics, Log and Meteric Management
+- ELASTIC: is used for Full-text Search, Data Analytics, Log and Meteric Management
 . we have used it as DB for the catalog microservice and it is no-SQL 
 . It is preferred over Mongodb for it's high speed and search ability
 . Sniffing is the dynamic discovery of nodes i.e. horizontal scaling
+. Index -> category; type -> subcategory; id -> identifier
+
+
 
