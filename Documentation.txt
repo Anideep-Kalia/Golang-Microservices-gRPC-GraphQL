@@ -70,6 +70,8 @@ ACCOUNT:
 . Maps database results to Go structures.
 . Ensures proper connection management.
 
+- SERVICE: only triggers corresnponding function of the repositroy and it is only made for business logic 
+
 - Server Layer (server.go): This layer handles interactions with external clients. In your code, the server layer might be used to:
 . Receive data from a client (e.g., a GRPC request).
 . Call the service layer methods to execute business logic.
@@ -104,5 +106,7 @@ CATALOG:
 . Sniffing is the dynamic discovery of nodes i.e. horizontal scaling
 . Index -> category; type -> subcategory; id -> identifier
 
+- REPOSITORY: Contains all the elastic search functions and not Postgres like in repository of ACCOUNT
+- SERVICE: have functions which just call corresponding Repository function so just like a cover for business logic
 
 
