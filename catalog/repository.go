@@ -148,15 +148,15 @@ func (r *elasticRepository) SearchProducts(ctx context.Context, query string, sk
 	res, err := r.client.Search().
 		Index("catalog").
 		Type("product").
-		Query(elastic.NewMultiMatchQuery(query, "name", "description")).		// search query in name and description, MultiMatchQuery is used to search in multiple fields
-		From(int(skip)).Size(int(take)).										// pagination on the result of NewMultiMatchQuery on  whole db		
+		Query(elastic.NewMultiMatchQuery(query, "name", "description")).	// search query in name and description, MultiMatchQuery is used to search in multiple fields
+		From(int(skip)).Size(int(take)).									// pagination on the result of NewMultiMatchQuery on  whole db		
 		Do(ctx)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 	products := []Product{}
-	for _, hit := range res.Hits.Hits {
+	for _, hit := range res.Hits.Hits {								// First Hits: struct which container for all information; second: slice of individual matched documents
 		p := productDocument{}
 		if err = json.Unmarshal(*hit.Source, &p); err == nil {
 			products = append(products, Product{
