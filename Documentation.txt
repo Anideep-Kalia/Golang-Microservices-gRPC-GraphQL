@@ -70,7 +70,8 @@ ACCOUNT:
 . Maps database results to Go structures.
 . Ensures proper connection management.
 
-- SERVICE: only triggers corresnponding function of the repositroy and it is only made for business logic 
+- SERVICE: only triggers corresnponding function of the repositroy and it is only made for business logic
+- SEVER: opens up the GRPC connecttion and handles logic and transmission between Server and Client which is in GRPC
 
 - Server Layer (server.go): This layer handles interactions with external clients. In your code, the server layer might be used to:
 . Receive data from a client (e.g., a GRPC request).
