@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/akhilsharma90/go-graphql-microservice/catalog"
+	"github.com/Anideep-Kalia/go-graphql-grpc-micro/catalog"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/tinrab/retry"
 )
@@ -24,7 +24,7 @@ func main() {
 	retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
 		r, err = catalog.NewElasticRepository(cfg.DatabaseURL)
 		if err != nil {
-			log.Println(err)
+			log.Println("Hello ji kaise ho, aapka db nahi chal raha hai: ", err)
 		}
 		return
 	})
