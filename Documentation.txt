@@ -109,5 +109,27 @@ CATALOG:
 
 - REPOSITORY: Contains all the elastic search functions and not Postgres like in repository of ACCOUNT
 - SERVICE: have functions which just call corresponding Repository function so just like a cover for business logic
+-------------------------------------------------------------------------------------------------------
+SYNTAX:
+
+retry.ForeverSleep: 
+maxRetries := 4
+retry.ForeverSleep(2*time.Second, func(attempt int) (err error) {
+    if attempt >= maxRetries {
+        fmt.Println("Max retries reached. Stopping.")
+        return nil // Stop retrying by returning nil
+    }
+
+    r, err = catalog.NewElasticRepository(cfg.DatabaseURL)
+    if err != nil {
+        log.Printf("Attempt %d failed: %v", attempt+1, err) // attempt is 0-indexed
+        return err // Continue retrying
+    }
+
+    fmt.Println("Successfully connected!")
+    return nil // Stop retrying on success
+})
+
+
 
 
