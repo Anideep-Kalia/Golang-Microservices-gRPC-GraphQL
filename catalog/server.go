@@ -57,7 +57,7 @@ func (s *grpcServer) GetProduct(ctx context.Context, r *pb.GetProductRequest) (*
 	}, nil
 }
 
-func (s *grpcServer) GetProducts(ctx context.Context, r *pb.GetProductsRequest) (*pb.GetProductsResponse, error) {
+func (s *grpcServer) GetProducts(ctx context.Context, r *pb.GetProductsRequest) (*pb.GetProductsResponse, error) {	//Checkout client for more Clearity
 	var res []Product
 	var err error
 	if r.Query != "" {

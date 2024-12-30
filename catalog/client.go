@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/Anideep-Kalia/go-graphql-grpc-micro/catalog/pb"
-	
+
 	"google.golang.org/grpc"
 )
 
@@ -13,7 +13,7 @@ type Client struct {
 	service pb.CatalogServiceClient
 }
 
-func NewClient(url string) (*Client, error) {
+func NewClient(url string) (*Client, error) {				// again same making a new client to connect to the grpc server made by the service
 	conn, err := grpc.Dial(url, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
