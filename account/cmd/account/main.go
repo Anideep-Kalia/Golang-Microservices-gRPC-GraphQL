@@ -31,6 +31,6 @@ func main() {
 	defer r.Close()
 
 	log.Println("Listening on port 8080...")
-	s := account.NewService(r)						     					// NewService is a function in service.go		
+	s := account.NewService(r)						     					// connecting service with db repository		
 	log.Fatal(account.ListenGRPC(s, 8080))									// ListenGRPC is a function in server.go
 }

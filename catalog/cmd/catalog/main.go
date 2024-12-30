@@ -31,6 +31,6 @@ func main() {
 	defer r.Close()
 
 	log.Println("Listening on port 8080...")
-	s := catalog.NewService(r)
+	s := catalog.NewService(r)					// connecting service with db repository
 	log.Fatal(catalog.ListenGRPC(s, 8080))
 }

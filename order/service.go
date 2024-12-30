@@ -47,7 +47,7 @@ func (s orderService) PostOrder(
 		AccountID: accountID,
 		Products:  products,
 	}
-	// Calculate total price
+	// Calculate total price so initialising later from above initialisation
 	o.TotalPrice = 0.0
 	for _, p := range products {
 		o.TotalPrice += p.Price * float64(p.Quantity)
