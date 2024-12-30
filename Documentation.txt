@@ -110,6 +110,22 @@ CATALOG:
 - REPOSITORY: Contains all the elastic search functions and not Postgres like in repository of ACCOUNT
 - SERVICE: have functions which just call corresponding Repository function so just like a cover for business logic
 -------------------------------------------------------------------------------------------------------
+ORDER:
+
+- Postgres used as db
+- 
+
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+SQL/POSTGRES
+- BeginTx: is used when we have to implement more than one db commands and if all commands are done then only change the db otherwise rollback
+- QueryRowContext:  row := r.db.QueryRowContext(ctx, "SELECT id, name FROM accounts WHERE id = $1", id)	
+- ExecContext: 	    _, err := r.db.ExecContext(ctx, "INSERT INTO accounts(id, name) VALUES($1, $2)", a.ID, a.Name)
+- QueryContext:	    rows, err := r.db.QueryContext( ctx,"SELECT id, name FROM accounts ORDER BY id DESC OFFSET $1 LIMIT $2", skip, take, )
+- PrepareContext:   used to prepare SQL commands struct which can be used again and again
+- CopyIN: 	    used to insert multiple rows in a single query so we don't have to run insert query multiple times
+- For multiple insertion into db above 2 are used as wee can see in repository of ORDER
+-------------------------------------------------------------------------------------------------------
 SYNTAX:
 
 retry.ForeverSleep: 

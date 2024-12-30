@@ -33,12 +33,13 @@ func (r *postgresRepository) Close() {
 	r.db.Close()
 }
 
+// Putting multiple Orders in the database
 func (r *postgresRepository) PutOrder(ctx context.Context, o Order) (err error) {
-	tx, err := r.db.BeginTx(ctx, nil)
+	tx, err := r.db.BeginTx(ctx, nil)						// Used to ensure that all the queries are executed successfully
 	if err != nil {
 		return err
 	}
-	defer func() {
+	defer func() {											// Defer is used to rollback the transaction if any error occurs
 		if err != nil {
 			tx.Rollback()
 			return
@@ -46,7 +47,6 @@ func (r *postgresRepository) PutOrder(ctx context.Context, o Order) (err error) 
 		err = tx.Commit()
 	}()
 
-	// Insert order
 	_, err = tx.ExecContext(
 		ctx,
 		"INSERT INTO orders(id, created_at, account_id, total_price) VALUES($1, $2, $3, $4)",
@@ -59,15 +59,15 @@ func (r *postgresRepository) PutOrder(ctx context.Context, o Order) (err error) 
 		return
 	}
 
-	// Insert order products
-	stmt, _ := tx.PrepareContext(ctx, pq.CopyIn("order_products", "order_id", "product_id", "quantity"))
+	stmt, _ := tx.PrepareContext(ctx, pq.CopyIn("order_products", "order_id", "product_id", "quantity"))	// Used to prepare SQL commnds for later execution... so it likes a structre
+	// CopyIn is used to insert multiple rows in a single query so we don't have to run insert query multiple times
 	for _, p := range o.Products {
 		_, err = stmt.ExecContext(ctx, o.ID, p.ID, p.Quantity)
 		if err != nil {
 			return
 		}
 	}
-	_, err = stmt.ExecContext(ctx)
+	_, err = stmt.ExecContext(ctx)		// essential for executing the bulk insert operation
 	if err != nil {
 		return
 	}
@@ -102,7 +102,7 @@ func (r *postgresRepository) GetOrdersForAccount(ctx context.Context, accountID 
 	orderedProduct := &OrderedProduct{}
 	products := []OrderedProduct{}
 
-	// Scan rows into Order structs
+	// Runs till there is next row in the result
 	for rows.Next() {
 		if err = rows.Scan(
 			&order.ID,
@@ -114,9 +114,9 @@ func (r *postgresRepository) GetOrdersForAccount(ctx context.Context, accountID 
 		); err != nil {
 			return nil, err
 		}
-		// Scan order
-		if lastOrder.ID != "" && lastOrder.ID != order.ID {
-			newOrder := Order{
+		// there can be multiple products having same order id so we need to check if the order id is same as the last order id
+		if lastOrder.ID != "" && lastOrder.ID != order.ID {				
+			newOrder := Order{								// lastOrder is saved in db ensuring that all the products of last order are saved						
 				ID:         lastOrder.ID,
 				AccountID:  lastOrder.AccountID,
 				CreatedAt:  lastOrder.CreatedAt,
@@ -126,7 +126,7 @@ func (r *postgresRepository) GetOrdersForAccount(ctx context.Context, accountID 
 			orders = append(orders, newOrder)
 			products = []OrderedProduct{}
 		}
-		// Scan products
+		// Collect all the products for the same order id
 		products = append(products, OrderedProduct{
 			ID:       orderedProduct.ID,
 			Quantity: orderedProduct.Quantity,
@@ -135,7 +135,7 @@ func (r *postgresRepository) GetOrdersForAccount(ctx context.Context, accountID 
 		*lastOrder = *order
 	}
 
-	// Add last order (or first :D)
+	// Add last order as Next() will not run for the last row
 	if lastOrder != nil {
 		newOrder := Order{
 			ID:         lastOrder.ID,
