@@ -9,7 +9,7 @@ import (
 	"net"
 	catalog "github.com/Anideep-Kalia/go-graphql-grpc-micro/catalog"
 	account "github.com/Anideep-Kalia/go-graphql-grpc-micro/account"
-	"github.com/akhilsharma90/go-graphql-microservice/order/pb"
+	"github.com/Anideep-Kalia/go-graphql-grpc-micro/order/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -20,6 +20,7 @@ type grpcServer struct {
 	catalogClient *catalog.Client
 }
 
+// Connecting to both account and catalog services for their services
 func ListenGRPC(s Service, accountURL, catalogURL string, port int) error {
 	accountClient, err := account.NewClient(accountURL)
 	if err != nil {
@@ -50,23 +51,20 @@ func ListenGRPC(s Service, accountURL, catalogURL string, port int) error {
 	return serv.Serve(lis)
 }
 
-func (s *grpcServer) PostOrder(
-	ctx context.Context,
-	r *pb.PostOrderRequest,
-) (*pb.PostOrderResponse, error) {
-	// Check if account exists
-	_, err := s.accountClient.GetAccount(ctx, r.AccountId)
+func (s *grpcServer) PostOrder( ctx context.Context, r *pb.PostOrderRequest) (*pb.PostOrderResponse, error) {
+
+	_, err := s.accountClient.GetAccount(ctx, r.AccountId) 		// Check if account exists	
 	if err != nil {
 		log.Println("Error getting account: ", err)
 		return nil, errors.New("account not found")
 	}
 
-	// Get ordered products
 	productIDs := []string{}
-	for _, p := range r.Products {
+	for _, p := range r.Products {								// collecting all the product given in the request
 		productIDs = append(productIDs, p.ProductId)
 	}
-	orderedProducts, err := s.catalogClient.GetProducts(ctx, 0, 0, productIDs, "")
+
+	orderedProducts, err := s.catalogClient.GetProducts(ctx, 0, 0, productIDs, "")		// Getting all the products from the catalog service
 	if err != nil {
 		log.Println("Error getting products: ", err)
 		return nil, errors.New("products not found")
@@ -74,7 +72,7 @@ func (s *grpcServer) PostOrder(
 
 	// Construct products
 	products := []OrderedProduct{}
-	for _, p := range orderedProducts {
+	for _, p := range orderedProducts{
 		product := OrderedProduct{
 			ID:          p.ID,
 			Quantity:    0,
@@ -83,32 +81,36 @@ func (s *grpcServer) PostOrder(
 			Description: p.Description,
 		}
 		for _, rp := range r.Products {
-			if rp.ProductId == p.ID {
+			if rp.ProductId == p.ID {							// If product id matches then we need to add the quantity
 				product.Quantity = rp.Quantity
 				break
 			}
 		}
 
-		if product.Quantity != 0 {
+		if product.Quantity != 0 {								// If quantity is 0 then we don't need to add it to the order
 			products = append(products, product)
 		}
 	}
 
-	// Call service implementation
+	// Call Order service implementation
 	order, err := s.service.PostOrder(ctx, r.AccountId, products)
 	if err != nil {
 		log.Println("Error posting order: ", err)
 		return nil, errors.New("could not post order")
 	}
 
-	// Make response order
+	// Make grpc response order
 	orderProto := &pb.Order{
 		Id:         order.ID,
 		AccountId:  order.AccountID,
 		TotalPrice: order.TotalPrice,
 		Products:   []*pb.Order_OrderProduct{},
 	}
+
+	//  to match the protobuf-defined format for timestamps
 	orderProto.CreatedAt, _ = order.CreatedAt.MarshalBinary()
+	
+	// Populate order products which are collected in line 74
 	for _, p := range order.Products {
 		orderProto.Products = append(orderProto.Products, &pb.Order_OrderProduct{
 			Id:          p.ID,
