@@ -125,10 +125,7 @@ func (s *grpcServer) PostOrder( ctx context.Context, r *pb.PostOrderRequest) (*p
 	}, nil
 }
 
-func (s *grpcServer) GetOrdersForAccount(
-	ctx context.Context,
-	r *pb.GetOrdersForAccountRequest,
-) (*pb.GetOrdersForAccountResponse, error) {
+func (s *grpcServer) GetOrdersForAccount( ctx context.Context, r *pb.GetOrdersForAccountRequest ) (*pb.GetOrdersForAccountResponse, error) {
 	// Get orders for account
 	accountOrders, err := s.service.GetOrdersForAccount(ctx, r.AccountId)
 	if err != nil {
@@ -137,13 +134,15 @@ func (s *grpcServer) GetOrdersForAccount(
 	}
 
 	// Get all ordered products
-	productIDMap := map[string]bool{}
+	productIDMap := map[string]bool{}					// To store all unique product ids
 	for _, o := range accountOrders {
 		for _, p := range o.Products {
 			productIDMap[p.ID] = true
 		}
 	}
 	productIDs := []string{}
+
+	// making a list of all the product ids and then getting all the products from the catalog service
 	for id := range productIDMap {
 		productIDs = append(productIDs, id)
 	}

@@ -114,6 +114,7 @@ ORDER:
 
 - Postgres used as db
 - These are specific to account 
+- A order can contain multiple Products with different ProductID
 
 -------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------
