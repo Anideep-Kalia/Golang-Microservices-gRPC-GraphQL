@@ -20,18 +20,15 @@ func NewClient(url string) (*Client, error) {
 		return nil, err
 	}
 	c := pb.NewOrderServiceClient(conn)
-	return &Client{conn, c}, nil
+	return &Client{conn, c}, nil						// made new client with conn as grpc.ClientConn and c as pb.OrderServiceClient
 }
 
 func (c *Client) Close() {
 	c.conn.Close()
 }
 
-func (c *Client) PostOrder(
-	ctx context.Context,
-	accountID string,
-	products []OrderedProduct,
-) (*Order, error) {
+// Accepting AccoutnID and slice of products ordered
+func (c *Client) PostOrder( ctx context.Context, accountID string, products []OrderedProduct ) (*Order, error) {
 	protoProducts := []*pb.PostOrderRequest_OrderProduct{}
 	for _, p := range products {
 		protoProducts = append(protoProducts, &pb.PostOrderRequest_OrderProduct{
@@ -50,7 +47,7 @@ func (c *Client) PostOrder(
 		return nil, err
 	}
 
-	// Create response order
+	// Creating response we get from server
 	newOrder := r.Order
 	newOrderCreatedAt := time.Time{}
 	newOrderCreatedAt.UnmarshalBinary(newOrder.CreatedAt)
@@ -74,7 +71,7 @@ func (c *Client) GetOrdersForAccount(ctx context.Context, accountID string) ([]O
 	}
 
 	// Create response orders
-	orders := []Order{}
+	orders := []Order{}								// int ans=0;
 	for _, orderProto := range r.Orders {
 		newOrder := Order{
 			ID:         orderProto.Id,
@@ -85,6 +82,7 @@ func (c *Client) GetOrdersForAccount(ctx context.Context, accountID string) ([]O
 		newOrder.CreatedAt.UnmarshalBinary(orderProto.CreatedAt)
 
 		products := []OrderedProduct{}
+		// Getting all the products in the order and typecasting them to OrderedProduct as slice of grpc is different from slice of OrderedProduct
 		for _, p := range orderProto.Products {
 			products = append(products, OrderedProduct{
 				ID:          p.Id,
