@@ -117,6 +117,7 @@ ORDER:
 - A order can contain multiple Products with different ProductID
 
 -------------------------------------------------------------------------------------------------------
+go run . => on docker-compose.yaml to run all the docker files and run the project
 -------------------------------------------------------------------------------------------------------
 SQL/POSTGRES
 - BeginTx: is used when we have to implement more than one db commands and if all commands are done then only change the db otherwise rollback
