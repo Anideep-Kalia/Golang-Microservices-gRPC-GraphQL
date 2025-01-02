@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/order/pb"
+	"github.com/Anideep-Kalia/go-graphql-microservice/order/pb"
 	"google.golang.org/grpc"
 )
 

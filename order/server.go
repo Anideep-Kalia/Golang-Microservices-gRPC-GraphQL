@@ -7,9 +7,10 @@ import (
 	"fmt"
 	"log"
 	"net"
-	catalog "github.com/Anideep-Kalia/go-graphql-grpc-micro/catalog"
-	account "github.com/Anideep-Kalia/go-graphql-grpc-micro/account"
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/order/pb"
+
+	account "github.com/Anideep-Kalia/go-graphql-microservice/account"
+	catalog "github.com/Anideep-Kalia/go-graphql-microservice/catalog"
+	"github.com/Anideep-Kalia/go-graphql-microservice/order/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

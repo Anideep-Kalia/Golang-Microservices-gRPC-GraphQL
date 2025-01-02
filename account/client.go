@@ -4,7 +4,7 @@ package account
 import (
 	"context"
 
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/account/pb"
+	"github.com/Anideep-Kalia/go-graphql-microservice/account/pb"
 	"google.golang.org/grpc"
 )
 

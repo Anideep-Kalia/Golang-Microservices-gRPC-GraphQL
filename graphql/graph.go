@@ -1,13 +1,14 @@
-// this file is like graphql gateway which connects to different micro-services and provides the resolvers for the graphql schema
-// this code follows the standard patterns for using gqlgen
 package main
 
 import (
 	"github.com/99designs/gqlgen/graphql"
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/account"
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/catalog"
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/order"
+	"github.com/Anideep-Kalia/go-graphql-microservice/account"
+	"github.com/Anideep-Kalia/go-graphql-microservice/catalog"
+	"github.com/Anideep-Kalia/go-graphql-microservice/order"
 )
+
+// this file is like graphql gateway which connects to different micro-services and provides the resolvers for the graphql schema
+// this code follows the standard patterns for using gqlgen
 
 // struct uses to connect to the different micro-services
 type Server struct {

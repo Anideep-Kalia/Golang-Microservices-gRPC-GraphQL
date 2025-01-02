@@ -2,9 +2,7 @@ package catalog
 
 import (
 	"context"
-
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/catalog/pb"
-
+	"github.com/Anideep-Kalia/go-graphql-microservice/catalog/pb"
 	"google.golang.org/grpc"
 )
 

@@ -1,8 +1,0 @@
-schema: schema.graphql
-
-models:
-  Account:
-    model: github.com/Anideep-Kalia/go-graphql-grpc-micro/graphql.Account
-    fields:
-      orders:
-        resolver: true

@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/99designs/gqlgen/handler"
 	"github.com/kelseyhightower/envconfig"
 )
@@ -29,7 +28,7 @@ func main() {
 	}
 
 	http.Handle("/graphql", handler.GraphQL(s.ToExecutableSchema()))
-	http.Handle("/playground", playground.Handler("Anni", "/graphql"))
+	http.Handle("/playground", handler.Playground("akhil", "/graphql"))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

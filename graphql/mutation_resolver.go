@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/Anideep-Kalia/go-graphql-grpc-micro/order"
+	"github.com/Anideep-Kalia/go-graphql-microservice/order"
 )
 
 var (
