@@ -1,4 +1,4 @@
-# Go-GraphQL-Microservice
+# Go-Microservice-gRPC-GraphQL
 
 This project is a Go-based microservice architecture using gRPC, GraphQL, and various other technologies like PostgreSQL, ElasticSearch, and Protocol Buffers.
 
