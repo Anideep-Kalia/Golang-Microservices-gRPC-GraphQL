@@ -128,6 +128,91 @@ SQL/POSTGRES
 - CopyIN: 	    used to insert multiple rows in a single query so we don't have to run insert query multiple times
 - For multiple insertion into db above 2 are used as wee can see in repository of ORDER
 -------------------------------------------------------------------------------------------------------
+QUERIES AND MUTATION:
+> query{
+	accounts{
+		id
+		name
+	}
+   }
+
+> mutation{
+	createAccount(account:{name: "New Account"}){
+		id
+		name
+	}
+  }
+
+> mutation{
+	createProduct(product:{name:"New Product", description:"A new product", "price":199}){
+		id
+		name
+		price
+	}
+  }
+
+> query{
+	products{
+	id
+	name
+	price
+	}
+  }
+
+> query{
+	accounts{
+	id
+	name
+	}
+  }
+
+> mutation{
+	createOrder(order:{accountId:"??", products:[{id:"?",quantity:?}]}){
+		id
+		totalPrice
+		products{
+		name
+		quantity
+		}
+	}
+  }
+
+> query{
+	accounts(id: "?"){
+		name
+		orders{
+			id
+			createdAt
+			totalPrice
+			products{
+				name
+				quantity
+				price
+			}
+		}
+	}
+  }
+
+> query{
+	products(pagination:{skip:0, take:5},query:"?"){
+		id
+		name
+		description
+		price
+	}
+  }
+
+> query{
+	accounts(id:"?"){
+		name
+		orders{
+			totalPrice
+		}
+	}
+}
+
+
+-------------------------------------------------------------------------------------------------------
 SYNTAX:
 
 retry.ForeverSleep: 
